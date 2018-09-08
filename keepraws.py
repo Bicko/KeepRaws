@@ -19,33 +19,32 @@
 #   MB__1442.CR2
 #   MB__1442.CR2.xmp
 #
- 
+
 import os
 import shutil
 import re
- 
+
 jpegFolder   = 'JPEGs'
 rawFolder    = 'RAWs'
 keeperFolder = 'KeptRaws'
- 
+
 # regex for a valid jpeg filename:
 imageRegex = re.compile(r'MB__\d{4}(_\d+)?\.(jpg|JPG)$')
-#imageRegex = re.compile(r'MB__\d{4}(_\d+)?\.jpg$', re.I)    #Case-insensitive matching
- 
+
 print('Current dir is', os.getcwd())
- 
+
 if (os.path.isdir(rawFolder)):
     # Raw Folder exists, safe to continue
     if (os.path.isdir(jpegFolder)):
         imageList = os.listdir(jpegFolder)
         print(jpegFolder + ' directory found containing ' + str(len(imageList)) + ' images')  #Assumption: all files in directory are images!
- 
+
         if (os.path.isdir(keeperFolder)):
             print(keeperFolder + ' directory already exists, skipping creation')
         else:
             print('Creating ' + keeperFolder + ' directory')
             os.makedirs(keeperFolder)
- 
+
         for image in imageList:
             if imageRegex.search(image) == None:
                 print('\n' + image + ' isnt a valid filename.')
@@ -56,7 +55,7 @@ if (os.path.isdir(rawFolder)):
                 rawNamePath = os.path.join(rawFolder, rawName)
                 xmpName = imageRegex.search(image).group()[:-4] + '.CR2.xmp'
                 xmpNamePath = os.path.join(rawFolder, xmpName)
- 
+
                 print('Looking for ' + rawName, end = ' ')
                 if (os.path.isfile(rawNamePath)):
                     print('...found')
@@ -69,7 +68,7 @@ if (os.path.isdir(rawFolder)):
                         print('... ' + xmpName + ' NOT FOUND.')
                 else:
                     print('...' + rawName + ' NOT FOUND. Skipping.')
- 
+
         print('\nDone')
     else:
         print(jpegFolder + ' DIRECTORY NOT FOUND!')
